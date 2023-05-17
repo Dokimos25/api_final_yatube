@@ -1,4 +1,3 @@
-# from rest_framework import permissions, filters
 from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import (GenericViewSet, ModelViewSet,
                                      ReadOnlyModelViewSet)
@@ -18,12 +17,18 @@ class ListCreateViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
 
 
 class GroupViewSet(ReadOnlyModelViewSet):
+    """
+    Список групп.
+    """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = (IsAuthorOrReadOnly,)
 
 
 class PostViewSet(ModelViewSet):
+    """
+    Список постов.
+    """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (IsAuthorOrReadOnly,)
@@ -34,6 +39,9 @@ class PostViewSet(ModelViewSet):
 
 
 class CommentViewSet(ModelViewSet):
+    """
+    Список комментариев.
+    """
     serializer_class = CommentSerializer
     permission_classes = (IsAuthorOrReadOnly,)
 
@@ -47,10 +55,13 @@ class CommentViewSet(ModelViewSet):
 
 
 class FollowViewSet(ListCreateViewSet):
+    """
+    Список подписок.
+    """
     serializer_class = FollowSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = (SearchFilter,)
-    search_fields = ("user__username", "following__username")
+    search_fields = ('user__username', 'following__username')
 
     def get_queryset(self):
         return self.request.user.follower.all()

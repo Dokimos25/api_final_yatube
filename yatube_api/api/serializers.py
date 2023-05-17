@@ -3,7 +3,6 @@ from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 from rest_framework.validators import UniqueTogetherValidator
 
-
 from posts.models import Comment, Follow, Post, Group
 
 User = get_user_model()
@@ -41,12 +40,12 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class FollowSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
-        slug_field="username",
+        slug_field='username',
         read_only=True,
         default=CurrentUserDefault(),
     )
     following = serializers.SlugRelatedField(
-        slug_field="username",
+        slug_field='username',
         queryset=User.objects.all()
     )
 
@@ -62,6 +61,6 @@ class FollowSerializer(serializers.ModelSerializer):
         validators = [
             UniqueTogetherValidator(
                 queryset=Follow.objects.all(),
-                fields=("user", "following")
+                fields=('user', 'following')
             )
         ]
